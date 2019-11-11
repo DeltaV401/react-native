@@ -19,19 +19,20 @@ export default function App() {
     }
     console.log(color, buttonTitle);
   }
+
+  const handleCanvas = canvas => {
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = 'purple';
+    ctx.fillRect(0,0,100,100);
+  }
+
   return (
-    <View style={styles.container}>
+    <>
+      <Canvas ref={handleCanvas}/>
+      <View style={styles.container}>
         <Text style={{...styles.text, color}} name="greeting">Hello, world!</Text>
         <TouchableOpacity style={styles.button} onPress={colorChange}><Text style={styles.buttonText}>{buttonTitle}</Text></TouchableOpacity>
-    </View>
+      </View>
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
