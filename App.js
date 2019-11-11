@@ -2,9 +2,24 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 export default function App() {
+  let [color, setColor] = useState('red');
+  let [buttonTitle, setButtonTitle] = useState('Turn the text black!');
+
+  const colorChange = e => {
+    e.preventDefault();
+    if(color === 'red') {
+      setColor('black');
+      setButtonTitle('Turn the text red!');
+    } else {
+      setColor('red');
+      setButtonTitle('Turn the text black!');
+    }
+    console.log(color, buttonTitle);
+  }
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+        <Text style={{...styles.text, color}} name="greeting">Hello, world!</Text>
+        <TouchableOpacity style={styles.button} onPress={colorChange}><Text style={styles.buttonText}>{buttonTitle}</Text></TouchableOpacity>
     </View>
   );
 }
