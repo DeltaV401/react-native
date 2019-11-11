@@ -1,5 +1,8 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { Text, View, TouchableOpacity } from 'react-native';
+import { Canvas } from 'react-native-canvas';
+
+import { styles } from './styles/app-style';
 
 export default function App() {
   let [color, setColor] = useState('red');
