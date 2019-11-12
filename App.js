@@ -19,14 +19,15 @@ export default function App() {
     }
   }
 
-  const canvasDraw = canvas => {
+  const handleCanvas = canvas => {
     const ctx = canvas.getContext('2d');
-    console.log('Issa here', ctx);
+    ctx.fillStyle = 'green';
+    ctx.fillRect(0,0,400,400);
   }
 
   return (
     <>
-      <View style={styles.canvas}><Canvas ref={canvasDraw}/></View>
+      <View style={styles.canvas}><Canvas ref={handleCanvas}/></View>
       <View style={styles.container}>
         <Text style={{...styles.text, color}} name="greeting">Hello, world!</Text>
         <TouchableOpacity style={styles.button} onPress={colorChange}><Text ket="button" style={styles.buttonText}>{buttonTitle}</Text></TouchableOpacity>
