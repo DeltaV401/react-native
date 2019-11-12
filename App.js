@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import Canvas from 'react-native-canvas';
 
@@ -10,6 +10,9 @@ import { styles } from './styles/app-style';
 export default function App() {
   let [color, setColor] = useState('red');
   let [buttonTitle, setButtonTitle] = useState('Turn the text black!');
+  let [permission, setPermission] = useState(null);
+  let [location, setLocation] = useState([]);
+
   let canvasEl = useRef(null);
 
   if (canvasEl.current) {
@@ -46,11 +49,39 @@ export default function App() {
     }
   }
 
+  useEffect(() => {
+    Permissions.askAsync(Permissions.LOCATION)
+      .then(({ status }) => {
+        console.log('Permission check', status);
+        setPermission(status === 'granted');
+      })
+  }, []);
+
+  useEffect(() => {
+    if(permission) {
+      let object = {
+        Accuracy: 6,
+      }
+      Location.getCurrentPositionAsync(object)
+        .then(location => {
+          console.log(location.coords)
+          setLocation({...location.coords});
+        });
+    }
+  }, [permission]);
+
+  let [text, setText] = useState('Waiting');
+  useEffect(() => {
+    if(location) {
+      setText(location)
+    }
+  })
+
   return (
     <>
       <View style={styles.canvas}><Canvas ref={canvasEl}/></View>
       <View style={styles.container}>
-        <Text style={{...styles.text, color}} name="greeting">Hello, world!</Text>
+        <Text style={{...styles.text, color}} name="greeting">Latitude: {location.latitude}, Longitude: {location.longitude}</Text>
         <TouchableOpacity style={styles.button} onPress={colorChange}><Text ket="button" style={styles.buttonText}>{buttonTitle}</Text></TouchableOpacity>
       </View>
     </>
