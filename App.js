@@ -7,11 +7,15 @@ import * as Location from 'expo-location';
 
 import { styles } from './styles/app-style';
 
+let locationSettings = {
+  accuracy: Location.Accuracy.Balanced,
+}
+
 export default function App() {
   let [color, setColor] = useState('red');
   let [buttonTitle, setButtonTitle] = useState('Turn the text black!');
   let [permission, setPermission] = useState(null);
-  let [location, setLocation] = useState([]);
+  let [location, setLocation] = useState({});
 
   let canvasEl = useRef(null);
 
@@ -19,27 +23,20 @@ export default function App() {
     const ctx = canvasEl.current.getContext('2d');
     ctx.fillStyle = 'green';
 
-    let x0 = Math.floor(Math.random() * 200);
-    let y0 = Math.floor(Math.random() * 200);
-    let x1 = Math.floor(Math.random() * 200);
-    let y1 = Math.floor(Math.random() * 200);
-    let random = randArray(4);
+    let x0 = 50;
+    let y0 = 50;
+    let x1 = (Math.ceil(location.latitude) - location.latitude) * 100000000000000;
+    let y1 = (Math.ceil(location.longitude) - location.longitude) * 100000000000000;
 
-    ctx.clearRect(0,0,400,400);
-    ctx.fillRect(...random);
+    ctx.fillRect(x0, y0, x1, y1);
   }
-
-  function randArray(length) {
-    let res = [];
-    for (var i = 0; i < length; i++) {
-      res.push(20 + Math.floor(Math.random() * 180));
-    }
-    return res;
-  }
-
 
   const colorChange = e => {
     e.preventDefault();
+    Location.getCurrentPositionAsync(locationSettings)
+      .then(location => {
+        setLocation({...location.coords});
+      });
     if(color === 'red') {
       setColor('black');
       setButtonTitle('Turn the text red!');
@@ -59,23 +56,12 @@ export default function App() {
 
   useEffect(() => {
     if(permission) {
-      let object = {
-        Accuracy: 6,
-      }
-      Location.getCurrentPositionAsync(object)
+      Location.getCurrentPositionAsync(locationSettings)
         .then(location => {
-          console.log(location.coords)
           setLocation({...location.coords});
         });
     }
   }, [permission]);
-
-  let [text, setText] = useState('Waiting');
-  useEffect(() => {
-    if(location) {
-      setText(location)
-    }
-  })
 
   return (
     <>
