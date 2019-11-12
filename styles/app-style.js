@@ -19,4 +19,9 @@ export const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
   },
+  canvas: {
+    backgroundColor: 'white',
+    flex: 1,
+    justifyContent: 'center',
+  }
 })

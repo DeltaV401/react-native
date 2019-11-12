@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
-import { Canvas } from 'react-native-canvas';
+import Canvas from 'react-native-canvas';
 
 import { styles } from './styles/app-style';
 
@@ -17,21 +17,19 @@ export default function App() {
       setColor('red');
       setButtonTitle('Turn the text black!');
     }
-    console.log(color, buttonTitle);
   }
 
-  const handleCanvas = canvas => {
+  const canvasDraw = canvas => {
     const ctx = canvas.getContext('2d');
-    ctx.fillStyle = 'purple';
-    ctx.fillRect(0,0,100,100);
+    console.log('Issa here', ctx);
   }
 
   return (
     <>
-      <Canvas ref={handleCanvas}/>
+      <View style={styles.canvas}><Canvas ref={canvasDraw}/></View>
       <View style={styles.container}>
         <Text style={{...styles.text, color}} name="greeting">Hello, world!</Text>
-        <TouchableOpacity style={styles.button} onPress={colorChange}><Text style={styles.buttonText}>{buttonTitle}</Text></TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={colorChange}><Text ket="button" style={styles.buttonText}>{buttonTitle}</Text></TouchableOpacity>
       </View>
     </>
   );
